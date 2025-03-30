@@ -1,6 +1,6 @@
-from farm_utils import auto_farm, after_mr
+from farm_utils import start_script, auto_farm, after_mr
 
-# auto_farm()
+# start_script()
+auto_farm('/s15')
 
-after_mr()
-
+# after_mr('/losttower7')

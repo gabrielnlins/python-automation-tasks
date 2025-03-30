@@ -8,6 +8,7 @@ import pygetwindow as gw
 pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\tesseract.exe"
 tessdata_dir_config = r'--tessdata-dir "C:\Program Files\Tesseract-OCR\tessdata"'
 
+game = "MudinhoX"
 solve_challenge = 'resolva o desafio'
 confirmation_button_path = r"C:\Users\Gabri\game\src\python-automation-tasks\images\confirm_button.png"
 verify_left_arrow = r"C:\Users\Gabri\game\src\python-automation-tasks\images\left_arrow_2.png"
@@ -24,24 +25,15 @@ walk = 1442,270
 x, y = 1395,185
 count = 0
 
+def start_script():
+    # TODO: adds validation if got recent MR or not
+    auto_farm('/s15')
+    after_mr('/losttower7')
+
 def click():
+    # ativar_janela(game)
     pyautogui.click(middle_screen, duration=0)
     print(f"pyautogui position: {pyautogui.position()}")
-
-def reset():
-    click()
-    stop_attack()
-    write_message('/resetar')
-    sleep(1)
-    start_time = time()
-    while not get_images():
-        print(f"Executando o loop de reset()... start_time: {start_time}, timeout: {timeout}")
-        get_images()
-        if time() - start_time > timeout:
-            print("Timeout atingido, retornando...")
-            click_on_confirm()
-            break
-    sleep(1)
 
 def write_message(message):
     pyautogui.hotkey('enter', presses=3, interval=0.5)
@@ -55,33 +47,62 @@ def hold_button(x, y):
     pyautogui.mouseDown(x, y, button='left', duration=2)
     pyautogui.mouseUp(x, y, button='left')
 
-def farm(location):
-    sleep(1)
-    start_time = time()
-    while not get_images():
-        print(f"Executando o loop de farm()... start_time: {start_time}, timeout: {timeout}")
-        get_images()
-        if time() - start_time > timeout:
-            print("Timeout atingido, retornando...")
-            click_on_confirm()
-            break
+def reset():
+    print("Iniciando script de reset...")
+    try:
         sleep(1)
-    time_to_sleep = 40
-    write_message(location)
-    if location == '/losttower7':
-        hold_button(position_losttower[0], position_losttower[1])
-        time_to_sleep = 90
-    start_attack()
-    press_button()
-    sleep(time_to_sleep)
-    print(f"Resetando...")
-    data = get_data()
-    data['count'] += 1
-    data['resets'] += 1
-    set_data(data)
-    print(f"Data: {data}")
-    # write_message('/a 1000')
-    # write_message('/e 3500')    
+        click()
+        stop_attack()
+        write_message('/resetar')
+        sleep(1)
+        start_time = time()
+        while not get_images():
+            print(f"Executando o loop de reset()... start_time: {start_time}, timeout: {timeout}")
+            get_images()
+            if time() - start_time > timeout:
+                print("Timeout atingido, retornando...")
+                click_on_confirm()
+                break
+        sleep(1)
+        return 0
+    except KeyboardInterrupt as e:
+        print(f"Script encerrado manualmente pelo usuário. {e}")
+        return 1 # stops while loop, 0 continues
+
+def farm(location):
+    try:
+        print("Iniciando script de farm...")
+        sleep(1)
+        pyautogui.hotkey('f8', presses=3, interval=0.5)
+        start_time = time()
+        while not get_images():
+            print(f"Executando o loop de farm()... start_time: {start_time}, timeout: {timeout}")
+            get_images()
+            if time() - start_time > timeout:
+                print("Timeout atingido, retornando...")
+                click_on_confirm()
+                break
+            sleep(1)
+        time_to_sleep = 40
+        write_message(location)
+        if location == '/losttower7':
+            hold_button(position_losttower[0], position_losttower[1])
+            time_to_sleep = 90
+        start_attack()
+        press_button()
+        sleep(time_to_sleep)
+        print(f"Resetando...")
+        data = get_data()
+        data['count'] += 1
+        data['resets'] += 1
+        set_data(data)
+        print(f"Data: {data}")
+        # write_message('/a 1000')
+        # write_message('/e 3500')
+        return 0
+    except KeyboardInterrupt as e:
+        print(f"Script encerrado manualmente pelo usuário. {e}")
+        return 1 # stops while loop, 0 continues
 
 def stop_attack():
     try:
@@ -96,15 +117,11 @@ def start_attack():
         print(f"Erro ao procurar botão de START {e}")
         return True
 
-def auto_farm():
-    while True:
-        reset()
-        farm('/s15')
+def auto_farm(map):
+    init_loop(map)
 
-def after_mr():
-    while True:
-        reset()
-        farm('/losttower7')
+def after_mr(map):
+    init_loop(map)
 
 def get_images():
     click()
@@ -218,3 +235,19 @@ def read_properties(file_path):
             full_list.append(string)
     print(f"Quantidade de atributos full: {len(full_list)}")
     return len(full_list)
+
+def ativar_janela(nome_janela):
+    janelas = gw.getWindowsWithTitle(nome_janela)[0]
+    if janelas:
+        janela = janelas
+        janela.activate()
+        print(f"Janela '{janela.title}' ativada.")
+    else:
+        print(f"Janela '{nome_janela}' não encontrada.")
+
+def init_loop(map):
+    while True:
+        data_from_reset = reset()
+        data_from_farm = farm(map)
+        if data_from_farm or data_from_reset > 1:
+            break
