@@ -1,5 +1,5 @@
 {
     "python.analysis.extraPaths": [
-        "./auto_farm"
+        "./python-automation-tasks"
     ]
 }
