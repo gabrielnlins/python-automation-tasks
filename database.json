@@ -1,5 +1,8 @@
 {
     "count_retry": 0,
-    "count": 300,
-    "resets": 300
+    "temporary_reset_count": 0,
+    "resets": 319,
+    "start_reset": 0,
+    "is_already_farming": 0,
+    "location": "/s15"
 }
