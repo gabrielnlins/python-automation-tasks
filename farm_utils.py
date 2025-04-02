@@ -10,12 +10,23 @@ import win32con
 pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\tesseract.exe"
 tessdata_dir_config = r'--tessdata-dir "C:\Program Files\Tesseract-OCR\tessdata"'
 
+block_messages = [
+    'isso esta',
+    'isso esta bloqueado',
+    'esta bloqueado aguarde:',
+    'bloqueado aguarde:',
+    'aguarde:',
+    'isso esta bloqueado aguarde:'
+]
+
 invalid_response = 'resposta'
 game = "MudinhoX"
 solve_challenge = 'resolva o desafio'
 confirmation_button_path = r"C:\Users\Gabri\game\src\python-automation-tasks\images\confirm_button.png"
 verify_left_arrow = r"C:\Users\Gabri\game\src\python-automation-tasks\images\left_arrow_2.png"
 avoid = r"C:\Users\Gabri\game\src\python-automation-tasks\images\avoid.png"
+lorencia = '/move lorencia'
+mu_helper = 'muhelper'
 
 images_to_check = [
     r"C:\Users\Gabri\game\src\python-automation-tasks\images_on_format\axe_1.png",
@@ -52,6 +63,9 @@ def write_message(message):
 def press_button():
     pyautogui.hotkey('c', presses=1, interval=0.5)
 
+def press_enter():
+    pyautogui.hotkey('enter', presses=1, interval=0.5)
+
 def press_esc():
     pyautogui.hotkey('esc', presses=1, interval=0.5)
 
@@ -81,8 +95,8 @@ def click_on_confirm():
     try:
         sleep(1)
         button = pyautogui.locateOnScreen(confirmation_button_path, confidence=0.8)
-        pyautogui.click(pyautogui.center(button), duration=0.15)
-        sleep(1.5)
+        pyautogui.click(pyautogui.center(button), duration=0.01)
+        sleep(0.5)
     except Exception as e:
         print(f"Erro ao procurar botão de confirmação {e}")
         return True

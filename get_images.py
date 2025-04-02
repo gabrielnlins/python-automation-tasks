@@ -49,6 +49,9 @@ def processar_imagens(images_to_check):
     imagens_encontradas = [resultado for resultado in resultados if resultado]
     if (imagens_encontradas):
         return True
+    if get_chat_print():
+        write_message(lorencia)
+        sleep(180)
     return False
 
 # images = [
@@ -70,6 +73,25 @@ def get_level_reset():
             return False
     else:
         return False
+
+def get_chat_print():
+    image = pyautogui.screenshot(region=(895, 100, 300, 400))
+    image.save(r"C:\Users\Gabri\game\src\python-automation-tasks\teste.png")
+    image = pytesseract.image_to_string(Image.open(r"C:\Users\Gabri\game\src\python-automation-tasks\teste.png"), lang="eng").lower()
+    for message in block_messages:
+        if message.lower() in image.lower():
+            return True
+        return False
+
+def print_muhelper():
+    image = pyautogui.screenshot(region=(1247, 0, 300, 500))
+    image.save(r"C:\Users\Gabri\game\src\python-automation-tasks\mu_helper.png")
+    image = pytesseract.image_to_string(Image.open(r"C:\Users\Gabri\game\src\python-automation-tasks\mu_helper.png"), lang="eng").lower()
+    if mu_helper in image:
+        return True
+    return False
+
+
 
 # def get_attributes():
 #     # for image in images:

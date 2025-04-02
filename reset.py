@@ -1,8 +1,9 @@
 from farm_utils import *
-from get_images import get_images, get_level_reset
+from get_images import get_images, get_level_reset, get_chat_print
 from data import get_data, set_data
 from master_reset import dar_mr
 from time import time, sleep
+import farm
 
 def reset():
     try:
@@ -13,10 +14,11 @@ def reset():
             print(f"Iniciando o loop de reset... start_time: {start_time}, timeout: {timeout}")
             if time() - start_time > timeout:
                 print("Timeout atingido, retornando...")
-                # write_message(data['location'])
-                reset()
-                # press_button()
+                if get_chat_print():
+                    write_message(lorencia)
+                    sleep(180)
                 sleep(0.5)
+                reset()
                 break
         if get_level_reset():
             write_message('/resetar')
@@ -28,7 +30,7 @@ def reset():
             print(f"Resets: {data['resets']}. Contagem temporária de resets: {data['temporary_reset_count']}")
             if data['temporary_reset_count'] >= 30: 
                 dar_mr(data)
-        return 0
+        return farm.farm(data['location'])
     except KeyboardInterrupt as e:
         print(f"Script encerrado manualmente pelo usuário. {e}")
         return 1 # stops while loop, 0 continues

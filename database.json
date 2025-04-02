@@ -1,7 +1,7 @@
 {
     "count_retry": 0,
-    "temporary_reset_count": 0,
-    "resets": 319,
+    "temporary_reset_count": 26,
+    "resets": 367,
     "start_reset": 0,
     "is_already_farming": 0,
     "location": "/s15"
