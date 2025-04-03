@@ -95,7 +95,7 @@ def click_on_confirm():
     try:
         sleep(1)
         button = pyautogui.locateOnScreen(confirmation_button_path, confidence=0.8)
-        pyautogui.click(pyautogui.center(button), duration=0.01)
+        pyautogui.click(pyautogui.center(button))
         sleep(0.5)
     except Exception as e:
         print(f"Erro ao procurar botão de confirmação {e}")

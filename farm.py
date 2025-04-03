@@ -8,7 +8,7 @@ def farm(location):
     try:
         click()
         start_time = time()
-        sleep(0.5)
+        # sleep(0.5)
         data = get_data()
         if print_muhelper():
             press_enter()
@@ -30,12 +30,12 @@ def farm(location):
             write_message('/a 3500')
         move_and_attack(location, data)
         press_button()
-        sleep(0.5)
         print("Farmando...")
-        if print_muhelper():
-            press_enter()
         while not get_level_reset():
-            sleep(2)
+            if print_muhelper():
+                press_enter()
+                farm(location)
+            sleep(4)
         return reset.reset()
     except KeyboardInterrupt as e:
         print(f"Script encerrado manualmente pelo usuário. {e}")

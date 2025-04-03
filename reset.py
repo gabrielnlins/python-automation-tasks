@@ -17,7 +17,7 @@ def reset():
                 if get_chat_print():
                     write_message(lorencia)
                     sleep(180)
-                sleep(0.5)
+                # sleep(0.5)
                 reset()
                 break
         if get_level_reset():
@@ -28,7 +28,7 @@ def reset():
             # data['is_already_farming'] = 0
             set_data(data)
             print(f"Resets: {data['resets']}. Contagem temporária de resets: {data['temporary_reset_count']}")
-            if data['temporary_reset_count'] >= 30: 
+            if data['temporary_reset_count'] >= 28: 
                 dar_mr(data)
         return farm.farm(data['location'])
     except KeyboardInterrupt as e:
